@@ -62,7 +62,7 @@ function GameRoom() {
 	
 	// TURN INDEX
 	this.setTurnIndex = function() {
-		for (let i = 0; i < this.players.length; i++) {
+		for (var i = 0; i < this.players.length; i++) {
 			const ply = this.players[i];
 			ply.game = {
 				turnIndex: i
@@ -94,7 +94,7 @@ function GameRoom() {
     
     // Send all mesg for players in room.
     this.emitAll = function (name, obj) {
-        for (let i = 0; i < this.players.length; i++) {
+        for (var i = 0; i < this.players.length; i++) {
             const player = this.players[i];
             player.emit(name, obj);
         }
@@ -104,7 +104,7 @@ function GameRoom() {
     this.emitAllExcept = function (socket, name, value) {
         var index = this.players.indexOf (socket);
         // console.log ('emitAllExcept ' + index);
-        for (let i = 0; i < this.players.length; i++) {
+        for (var i = 0; i < this.players.length; i++) {
             const player = this.players[i];
             // IS SOCKET
             if (i !== index)
@@ -120,7 +120,7 @@ function GameRoom() {
     // Get rom info.
     this.getInfo = function() {
         var playerInfoes = [];
-        for (let i = 0; i < this.players.length; i++) {
+        for (var i = 0; i < this.players.length; i++) {
             const player = this.players[i];
             playerInfoes.push (player.player);
         }
@@ -132,7 +132,7 @@ function GameRoom() {
 	
 	// Each client contain in room.
     this.each = function (callback) {
-		for (let i = 0; i < this.players.length; i++) {
+		for (var i = 0; i < this.players.length; i++) {
             const player = this.players[i];
 			if (callback)
 			{
