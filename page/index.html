@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Ghost VS Knight</title>
+   </head>
+   
+   <script src = "/socket.io/socket.io.js"></script>
+   <script>
+      var socket = io();
+      var turnIndex = -1;
+      var prefixWord = '';
+      function setPlayerData() {
+         socket.emit('setPlayerData', 
+         { 'playerName': document.getElementById('name').value, 'playerCharacter': 0 });
+      };
+      var user;
+      function sendMessage() {
+         var msg = document.getElementById('message').value;
+         if(msg) {
+            socket.emit('sendRoomChat', {message: msg, user: user});
+            document.getElementById('message').value = '';
+         }
+      }
+      socket.on('msgChatRoom', function(data) {
+         if (user) {
+            document.getElementById('message-container').innerHTML += '<div><b>' + 
+               data.user + '</b>: ' + data.message + '</div>'
+         }
+         console.log ('MESSAGE RECEIVE ' + JSON.stringify(data));
+      })
+      socket.on('joinRoomCompleted', function(data) {
+         console.log ('joinRoomCompleted ' + JSON.stringify(data));
+      })
+      function getRoomsStatus() {
+            socket.emit('getRoomsStatus');
+      }
+      function JoinOrCreateRoom() {
+            socket.emit('joinOrCreateRoom', { roomName: 'Room-1' });
+      }
+      function LeaveRoom() {
+            socket.emit('leaveRoom');
+      }
+      function SendChatWord()
+      {
+            socket.emit('sendWorldChat', { message: 'This is my chat...' });
+      }
+      function SendUpdatePosition()
+      {
+            socket.emit('updatePosition', { x: 0.1, y: 0.1, currentPosition: "0.0,0.0,0.0" });
+      }
+      socket.on("moveWithInput", function(data)
+      {
+            console.log ('moveWithInput ' + JSON.stringify(data));
+      });
+      function SendUpdateSkill()
+      {
+            socket.emit('updateSkill', { skill: 0 });
+      }
+      socket.on("useSkill", function(data)
+      {
+            console.log ('useSkill ' + JSON.stringify(data));
+      });
+      socket.on('playerDataSet', function(data) {
+            console.log (JSON.stringify(data));
+      });
+      socket.on('updateRoomStatus', function(data) {
+            console.log (JSON.stringify(data));
+      });
+	  socket.on('updateRoomSize', function(data) {
+            console.log ('updateRoomSize ' + JSON.stringify(data));
+      });
+	  socket.on ('joinRoomFailed', function(data) {
+            console.log ('joinRoomFailed ' + JSON.stringify(data));
+      });
+      socket.on('newJoinRoom', function(data) {
+            console.log (JSON.stringify(data));
+      });
+      socket.on('clearRoom', function(data) {
+            console.log ("Room is clear ... ");
+      });
+	socket.on('leaveRoom', function(data) {
+            console.log ("Leaved Room ... ");
+      });
+	socket.on('newLeaveRoom', function(data) {
+           console.log ('newLeaveRoom ' + JSON.stringify(data));
+      });
+      socket.on('beep', function(data) {
+            console.log ("beep");
+      });
+      socket.on ('msgWorldChat', function(data) {
+            console.log ('msgWorldChat ' + JSON.stringify(data));
+      });
+	  socket.on ('msgError', function(data) {
+            console.log ('msgError ' + JSON.stringify(data));
+      });
+      setInterval(function(){
+            socket.emit("beep");
+      }, 1000);
+   </script>
+   
+   <body>
+      <div id = "error-container"></div>
+      <input id = "name" type = "text" name = "name" value = "" 
+         placeholder = "Enter your name!">
+      <button type = "button" name = "button" onclick = "setPlayerData()">
+         Let me chat!
+      </button>
+      <button type = "button" name = "button" onclick = "getRoomsStatus()">
+            Get room list
+      </button>
+      <button type = "button" name = "button" onclick = "JoinOrCreateRoom()">
+            Join or Create room
+      </button>
+      <button type = "button" name = "button" onclick = "LeaveRoom()">
+            Leave room
+      </button>
+      <br/>
+      <button type = "button" name = "button" onclick = "SendUpdatePosition()">
+            SEND UPDATE POSITION
+      </button>
+      <button type = "button" name = "button" onclick = "SendUpdateSkill()">
+            SEND USE SKILL
+      </button>
+   </body>
+</html>
