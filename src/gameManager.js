@@ -24,7 +24,7 @@ var GameManager = function (http) {
 	
 	function updateRoomStatus()
 	{
-		for (let i = 0; i < MAXIMUM_ROOMS; i++) {
+		for (var i = 0; i < MAXIMUM_ROOMS; i++) {
 			const roomName = 'Room-' + (i + 1);
 			const playerCount = typeof (rooms [roomName]) !== 'undefined' 
 									? rooms [roomName].length()
@@ -53,7 +53,7 @@ var GameManager = function (http) {
 			{
                 var isDuplicateName = false;
 				var playerName = refreshWord(data.playerName);
-                for (let i = 0; i < users.length; i++) {
+                for (var i = 0; i < users.length; i++) {
                     const u = users[i];
                     if (u.playerName == playerName) {
                         isDuplicateName = true;    
@@ -194,7 +194,7 @@ var GameManager = function (http) {
         socket.on('disconnect', function() {
             // console.log ('User disconnect...' + socket.id);
             if (socket.player) {
-                for (let i = 0; i < users.length; i++) {
+                for (var i = 0; i < users.length; i++) {
                     const u = users[i];
                     if (u.playerName == socket.player.playerName) {
                         users.splice(i, 1);  
@@ -243,7 +243,7 @@ var GameManager = function (http) {
     function activeTimer()
     {
         this.roomTimer = setInterval(function() {
-            for (let i = 0; i < MAXIMUM_ROOMS; i++) {
+            for (var i = 0; i < MAXIMUM_ROOMS; i++) {
                 const roomName = 'Room-' + (i + 1);
                 if (typeof (rooms [roomName]) !== 'undefined')
                 {
